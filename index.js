@@ -21,14 +21,18 @@ async function main() {
     const city = "Los Angeles";
     const zipcode = "90057";
 
-    const email = process.argv[1]
-    const password = process.argv[2]
-    const offerId = process.argv[3]
-    const cardVCC = process.argv[4]
+    let email = process.argv[1];
+    let password = process.argv[2]
+    let offerId = process.argv[3]
+    let cardVCC = process.argv[4]
 
     if (!process.argv[1]) {
-        return console.error("Usage: node index.js email pass offerId cardvcc")
+        console.error("Usage: node index.js email pass offerId cardvcc")
     }
+    email = input("What da email ")
+    password = input("What da password ")
+    offerId = input("What da offerId ")
+    cardVCC = input("What da cardVCC ")
 
     console.log("This gen only supports xag accounts! Otherwise it won't work.")
 
