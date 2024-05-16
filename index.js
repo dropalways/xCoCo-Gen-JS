@@ -1,6 +1,8 @@
 const { firefox } = require("playwright")
 
 async function main() {
+    console.log("This library is sponsored by https://discord.gg/z7A9wf6D")
+    
     const state = "California";
     const stateAbbreviated = "CA".toLowerCase();
     const address = "435 Zimmerman Lane";
@@ -11,22 +13,28 @@ async function main() {
     const offerId = "f427340c-7844-42ad-872d-9d93f08b352e";
     const cardVCC = "5467758207407717|12|2026|645"
     const [cardNumber, cardExpMonth, cardExpYear, cardCvv] = cardVCC.split('|');
+
+    if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
+        throw new Error("Invalid cc, you're a nigger")
+    }
+    
     // const cardNumber = "5467758207407717";
     // const cardCvv = "645"
     // const cardExpMonth = "12";
     // const cardExpYear = "2026";
+
     // 5467758207407717|12|2026|645 into
     let url = "https://www.xbox.com/en-US/xbox-game-pass/invite-your-friends/redeem?offerId=";
     url += offerId;
-    console.log(state);
-    console.log(stateAbbreviated);
-    console.log(address);
-    console.log(zipcode);
-    console.log(city);
 
-    const browser = await firefox.launch({headless: false});
+    const browser = await firefox.launch({
+            headless: false
+    });
+    
     const page = await browser.newPage();
+    
     await page.goto(url);
+
     await page.getByLabel('Sign in or create a Microsoft').click();
     await page.getByTestId('i0116').click();
     await page.getByTestId('i0116').click();
