@@ -1,17 +1,21 @@
 const { firefox } = require("playwright")
 
 async function main() {
-    console.log("This library is sponsored by https://discord.gg/z7A9wf6D")
+    console.log("This library is sponsored by XAG || https://discord.gg/z7A9wf6D")
     
     const state = "California";
     const stateAbbreviated = "CA".toLowerCase();
     const address = "435 Zimmerman Lane";
     const city = "Los Angeles";
     const zipcode = "90057";
-    const email = "ab82d717b8590e9d3@outlook.com";
-    const password = "e90fc83abb95c01f6fb6";
-    const offerId = "f427340c-7844-42ad-872d-9d93f08b352e";
-    const cardVCC = "5467758207407717|12|2026|645"
+
+    const email = process.argv[1]
+    const password = process.argv[2]
+    const offerId = process.argv[3]
+    const cardVCC = process.argv[4]
+
+    console.log("This gen only supports xag accounts! Otherwise it won't work.")
+
     const [cardNumber, cardExpMonth, cardExpYear, cardCvv] = cardVCC.split('|');
 
     if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
