@@ -17,11 +17,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 async function main() {
     console.log("This library is sponsored by XAG || https://discord.gg/z7A9wf6D")
     
-    const state = "California";
-    const stateAbbreviated = "CA".toLowerCase();
-    const address = "435 Zimmerman Lane";
-    const city = "Los Angeles";
-    const zipcode = "90057";
+    const state = "North Carolina";
+    const stateAbbreviated = "NC".toLowerCase();
+    const address = "207 Fire Access Road";
+    const city = "Greensboro";
+    const zipcode = "27406";
 
     let email = process.argv[2];
     let password = process.argv[3];
@@ -149,7 +149,7 @@ async function main() {
         console.error(exception);
     }
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Confirm' }).click();
-    await sleep(5000)
+    await page.waitForSelector('text=Welcome to PC Game Pass', {"state": "visible"});
     // await page.getByRole('button', { name: 'REDEEM NOW' }).click();
     await page.goto('https://www.minecraft.net/en-us/login');
     await page.getByTestId('MSALoginButtonLink').click();
