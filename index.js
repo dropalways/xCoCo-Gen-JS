@@ -85,7 +85,7 @@ async function main() {
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Save').click();
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Use this address').click();
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Confirm' }).click();
-    await page.keyboard.down(ENTER)
+    await page.keyboard.down("ENTER")
     await page.getByRole('button', { name: 'REDEEM NOW' }).click();
     await page.goto('https://www.minecraft.net/en-us/login');
     await page.getByTestId('MSALoginButtonLink').click();
