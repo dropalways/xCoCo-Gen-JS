@@ -21,22 +21,61 @@ async function main() {
     const city = "Los Angeles";
     const zipcode = "90057";
 
-    let email = process.argv[1];
-    let password = process.argv[2]
-    let offerId = process.argv[3]
-    let cardVCC = process.argv[4]
+    let email = process.argv[2];
+    let password = process.argv[3];
+    let offerId = process.argv[4];
+    let cardVCC = process.argv[5];
 
-    if (!process.argv[1]) {
-        console.error("Usage: node index.js email pass offerId cardvcc")
+    if (!email || !password || !offerId || !cardVCC) {
+        console.log("Please enter the following information:");
+
+        const readline = require('readline').createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        await new Promise((resolve, reject) => {
+            readline.question("Email: ", (input) => {
+                email = input;
+                resolve();
+            });
+        });
+
+        await new Promise((resolve, reject) => {
+            readline.question("Password: ", (input) => {
+                password = input;
+                resolve();
+            });
+        });
+
+        await new Promise((resolve, reject) => {
+            readline.question("Offer ID: ", (input) => {
+                offerId = input;
+                resolve();
+            });
+        });
+
+        await new Promise((resolve, reject) => {
+            readline.question("Card VCC: ", (input) => {
+                cardVCC = input;
+                resolve();
+            });
+        });
+
+        readline.close();
+
+        console.log("\nEntered information:");
+        console.log("Email:", email);
+        console.log("Password:", password);
+        console.log("Offer ID:", offerId);
+        console.log("Card VCC:", cardVCC);
+    } else {
+        console.log("Using provided arguments:");
+        console.log("Email:", email);
+        console.log("Password:", password);
+        console.log("Offer ID:", offerId);
+        console.log("Card VCC:", cardVCC);
     }
-    console.log("What da email ")
-    email = WScript.StdIn.ReadLine();
-    console.log("What da pass ")
-    password = WScript.StdIn.ReadLine();
-    console.log("What da offerId ")
-    offerId = WScript.StdIn.ReadLine();
-    console.log("What da cardvcc ")
-    cardVCC = WScript.StdIn.ReadLine();
 
     console.log("This gen only supports xag accounts! Otherwise it won't work.")
 
@@ -45,6 +84,8 @@ async function main() {
     if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
         throw new Error("Invalid cc, you're a nigger")
     }
+
+
     
     // const cardNumber = "5467758207407717";
     // const cardCvv = "645"
@@ -166,4 +207,4 @@ async function main() {
     // await page.getByTestId('ChangeNameButton').click();
 }
 
-main();
+main().catch(error => console.error(error));
