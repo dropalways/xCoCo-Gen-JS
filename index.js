@@ -12,6 +12,8 @@ function generateUsername(length) {
     return result;
 }
 
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+
 async function main() {
     console.log("This library is sponsored by XAG || https://discord.gg/z7A9wf6D")
     
@@ -142,6 +144,7 @@ async function main() {
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Save').click();
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Use this address').click();
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Confirm' }).click();
+    await sleep(5000)
     // await page.getByRole('button', { name: 'REDEEM NOW' }).click();
     await page.goto('https://www.minecraft.net/en-us/login');
     await page.getByTestId('MSALoginButtonLink').click();
