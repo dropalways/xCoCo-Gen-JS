@@ -1,4 +1,4 @@
-xCocoGEN Policies
+# CocoGENV3 Pre-Release 3 Policies
 
 - No skidding
 - No selling this
@@ -6,4 +6,3 @@ xCocoGEN Policies
 
 
 
-# CocoGENV3 Pre-Release 3
