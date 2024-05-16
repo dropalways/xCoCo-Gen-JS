@@ -105,11 +105,12 @@ async function main() {
     await page.goto(url);
     await page.goto('https://www.xbox.com/en-US/xbox-game-pass/invite-your-friends/redeem?offerId=eea7fca8-4f56-46bd-935b-09be0eaf177f');
     await page.getByLabel('Sign in or create a Microsoft').click();
-    await page.getByTestId('i0116').fill('FEHvX8AajcT@outlook.com');
+    await page.getByTestId('i0116').fill(email);
     await page.getByTestId('i0116').press('Enter');
-    await page.getByTestId('i0118').fill('#u]DcO4<Lvy)MuWiBHZ>');
+    await page.getByTestId('i0118').fill(password);
     await page.getByTestId('i0118').press('Enter');
     await page.getByLabel('Stay signed in?').click();
+    if (await page.getByText('Sorry, you are not eligible for this offer.See terms')) return console.log("You arent eligible(Maybe have gamepass already?)")
     await page.getByRole('button', { name: 'REDEEM NOW' }).click();
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Close').click();
     await page.getByRole('button', { name: 'REDEEM NOW' }).click();
