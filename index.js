@@ -14,6 +14,10 @@ async function main() {
     const offerId = process.argv[3]
     const cardVCC = process.argv[4]
 
+    if (!process.argv[1]) {
+        return console.error("Usage: node index.js email pass offerId cardvcc")
+    }
+
     console.log("This gen only supports xag accounts! Otherwise it won't work.")
 
     const [cardNumber, cardExpMonth, cardExpYear, cardCvv] = cardVCC.split('|');
