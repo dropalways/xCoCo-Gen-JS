@@ -24,8 +24,8 @@ async function main() {
     console.log(zipcode);
     console.log(city);
 
-	const browser = await firefox.launch({headless: false});
-	const page = await browser.newPage();
+    const browser = await firefox.launch({headless: false});
+    const page = await browser.newPage();
     await page.goto(url);
     await page.getByLabel('Sign in or create a Microsoft').click();
     await page.getByTestId('i0116').click();
