@@ -29,10 +29,14 @@ async function main() {
     if (!process.argv[1]) {
         console.error("Usage: node index.js email pass offerId cardvcc")
     }
-    email = input("What da email ")
-    password = input("What da password ")
-    offerId = input("What da offerId ")
-    cardVCC = input("What da cardVCC ")
+    console.log("What da email ")
+    email = WScript.StdIn.ReadLine();
+    console.log("What da pass ")
+    password = WScript.StdIn.ReadLine();
+    console.log("What da offerId ")
+    offerId = WScript.StdIn.ReadLine();
+    console.log("What da cardvcc ")
+    cardVCC = WScript.StdIn.ReadLine();
 
     console.log("This gen only supports xag accounts! Otherwise it won't work.")
 
