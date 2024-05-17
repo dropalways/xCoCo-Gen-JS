@@ -206,22 +206,28 @@ async function main() {
     Logger.info("Clicked on the save button")
 
     try {
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Add profile address' }).click();
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Address line 1*').fill(address); // address
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('City*').click();
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('City*').fill(city);
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('State*').selectOption(stateAbbreviated); // state but short thing
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByPlaceholder('20001').click();
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByPlaceholder('20001').fill(zipcode); // zipcode here
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Save').click();
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Use this address').click()
+        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Confirm' }).click({timeout: 5000});
+        Logger.info("Clicked on the confirm button")
     }
     catch (exception) {
-        // Logger.error(exception.stack);
+        try {
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', {name: 'Add profile address'}).click();
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Address line 1*').fill(address); // address
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('City*').click();
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('City*').fill(city);
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('State*').selectOption(stateAbbreviated); // state but short thing
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByPlaceholder('20001').click();
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByPlaceholder('20001').fill(zipcode); // zipcode here
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Save').click();
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Use this address').click()
+            await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', {name: 'Confirm'}).click();
+            // Logger.error(exception.stack);
+        }
+        catch {
+            // yeah do nothing here
+        }
     }
 
-    await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Confirm' }).click();
-    Logger.info("Clicked on the confirm button")
     await page.waitForSelector('text=Welcome to PC Game Pass', { "state": "visible" });
     Logger.info("Successfully applied gamepass!")
     // await page.getByRole('button', { name: 'REDEEM NOW' }).click();
@@ -233,7 +239,7 @@ async function main() {
     Logger.info("Clicked on set profile name")
     await page.getByTestId('profile-name-input').click();
     // await page.getByTestId('profile-name-input').fill(generateUsername(16));
-    await page.get('profile-name-input').fill(`CocoGEN${generateUsername(9)}`)
+    await page.getByTestId('profile-name-input').fill(`CocoGEN${generateUsername(9)}`)
     Logger.info("Successfully set username check `hits.txt`")
 
     try {
