@@ -21,7 +21,7 @@ function generateUsername(length) {
 
 class Logger {
     static info(message) {
-        console.log(gradient('green', 'yellow')("Green | " + message))
+        console.log(gradient('green', 'yellow')("Info | " + message))
     }
 
     static warning(message) {
@@ -97,8 +97,8 @@ async function main() {
             comboList = comboListLines[0];
             offerId = offerIdLines[0];
             cardVCC = cardVCCLines[0];
-        } catch (err) {
-            Logger.error("Loaded CC info from combolist.txt & codes.txt & vc.txt")
+        } catch {
+            Logger.error("Failed to load")
         }
     }
 
