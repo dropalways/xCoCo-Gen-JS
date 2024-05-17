@@ -21,15 +21,15 @@ function generateUsername(length) {
 
 class Logger {
     static info(message) {
-        console.log(gradient('green', 'yellow')(message))
+        console.log(gradient('green', 'yellow')("Green | " + message))
     }
 
     static warning(message) {
-        console.log(gradient('orange', 'yellow')(message))
+        console.log(gradient('orange', 'yellow')("Warning | " + message))
     }
 
     static error(message) {
-        console.log(gradient('error', 'yellow')(message))
+        console.log(gradient('red', 'yellow')("Error | " + message))
     }
 }
 
