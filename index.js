@@ -20,6 +20,21 @@ function generateUsername(length) {
 
 
 class Logger {
+    static print_logo() {
+        console.log(gradient("blue", "cyan")(`
+        ▒██   ██▒ ▄▄▄▄    ▒█████  ▒██   ██▒     ▄████ ▓█████  ███▄    █ 
+        ▒▒ █ █ ▒░▓█████▄ ▒██▒  ██▒▒▒ █ █ ▒░    ██▒ ▀█▒▓█   ▀  ██ ▀█   █ 
+        ░░  █   ░▒██▒ ▄██▒██░  ██▒░░  █   ░   ▒██░▄▄▄░▒███   ▓██  ▀█ ██▒
+         ░ █ █ ▒ ▒██░█▀  ▒██   ██░ ░ █ █ ▒    ░▓█  ██▓▒▓█  ▄ ▓██▒  ▐▌██▒
+        ▒██▒ ▒██▒░▓█  ▀█▓░ ████▓▒░▒██▒ ▒██▒   ░▒▓███▀▒░▒████▒▒██░   ▓██░
+        ▒▒ ░ ░▓ ░░▒▓███▀▒░ ▒░▒░▒░ ▒▒ ░ ░▓ ░    ░▒   ▒ ░░ ▒░ ░░ ▒░   ▒ ▒ 
+        ░░   ░▒ ░▒░▒   ░   ░ ▒ ▒░ ░░   ░▒ ░     ░   ░  ░ ░  ░░ ░░   ░ ▒░
+         ░    ░   ░    ░ ░ ░ ░ ▒   ░    ░     ░ ░   ░    ░      ░   ░ ░ 
+         ░    ░   ░          ░ ░   ░    ░           ░    ░  ░         ░ 
+                       ░                                                        
+        `))
+    }
+
     static info(message) {
         console.log(gradient('green', 'yellow')("Info | " + message))
     }
@@ -73,6 +88,8 @@ function removeFirstLineFromFile(filePath) {
 }
 
 async function main() {
+    Logger.print_logo()
+
     Logger.warning("This library is sponsored by xag (https://discord.gg/z7A9wf6D)");
 
     const stateAbbreviated = "NC".toLowerCase();
