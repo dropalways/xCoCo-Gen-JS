@@ -1,3 +1,4 @@
+const gradient = require('gradient-string')
 const { firefox } = require("playwright")
 const fs = require('fs');
 
@@ -62,19 +63,19 @@ function removeFirstLineFromFile(filePath) {
 }
 
 async function main() {
-    console.log("This library is sponsored by XAG || https://discord.gg/z7A9wf6D");
+    console.log(gradient('green', 'yellow')("This library is sponsored by xag (https://discord.gg/z7A9wf6D)"));
 
-    const state = "North Carolina";
     const stateAbbreviated = "NC".toLowerCase();
     const address = "207 Fire Access Road";
     const city = "Greensboro";
     const zipcode = "27406";
+
     let comboList = process.argv[2];
     let offerId = process.argv[3];
     let cardVCC = process.argv[4];
 
     if (!comboList || !offerId || !cardVCC) {
-        console.log("Please enter the following information:");
+        console.log(gradient('green', 'yellow')("Loaded CC info from combolist.txt & codes.txt & vc.txt"));
 
         try {
             const [comboListLines, offerIdLines, cardVCCLines] = await Promise.all([
@@ -91,27 +92,15 @@ async function main() {
         }
     }
 
-    console.log("This gen only supports xag accounts! Otherwise it won't work."); // propaganda
+    console.log(gradient('green', 'yellow')("This gen only supports xag accounts! Otherwise it won't work.")); // propaganda
+
     const [email, password] = comboList.split(':');
     const [cardNumber, cardExpMonth, cardExpYear, cardCvv] = cardVCC.split('|')
 
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Offer ID:", offerId);
-    console.log("Card VCC:", cardVCC);
-
     if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
-        throw new Error("Invalid cc, you're a nigger")
+        return console.error(gradient('red', 'yellow')("Invalid cc"))
     }
 
-
-
-    // const cardNumber = "5467758207407717";
-    // const cardCvv = "645"
-    // const cardExpMonth = "12";
-    // const cardExpYear = "2026";
-
-    // 5467758207407717|12|2026|645 into
     let url = "https://www.xbox.com/en-US/xbox-game-pass/invite-your-friends/redeem?offerId=";
     url += offerId;
 
