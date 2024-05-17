@@ -91,10 +91,10 @@ async function main() {
 
     Logger.warning("This library is sponsored by xag (https://discord.gg/z7A9wf6D)");
 
-    const stateAbbreviated = "NC".toLowerCase();
-    const address = "207 Fire Access Road";
-    const city = "Greensboro";
-    const zipcode = "27406";
+    const stateAbbreviated = "CA".toLowerCase();
+    const address = "4424 Glendale Avenue";
+    const city = "Burbank";
+    const zipcode = "91504";
 
     let comboList = process.argv[2];
     let offerId = process.argv[3];
