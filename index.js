@@ -1,5 +1,6 @@
 const { firefox } = require("playwright")
 const fs = require('fs');
+
 function generateUsername(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -15,22 +16,22 @@ function generateUsername(length) {
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 function readFileAndSplitLines(filePath) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                reject(err);
+                return;
+            }
 
-      // Split the data into lines
-      const lines = data.split('\n');
+            // Split the data into lines
+            const lines = data.split('\n');
 
-      // Trim whitespace from each line (optional)
-      const trimmedLines = lines.map(line => line.trim());
+            // Trim whitespace from each line (optional)
+            const trimmedLines = lines.map(line => line.trim());
 
-      resolve(trimmedLines);
+            resolve(trimmedLines);
+        });
     });
-  });
 }
 
 function removeFirstLineFromFile(filePath) {
@@ -150,8 +151,9 @@ async function main() {
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByPlaceholder('20001').click();
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByPlaceholder('20001').press('Enter');
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Save').click();
+
     try {
-        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', {name: 'Add profile address'}).click();
+        await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Add profile address' }).click();
         await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Address line 1*').fill(address); // address
         await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('City*').click();
         await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('City*').fill(city);
@@ -162,26 +164,32 @@ async function main() {
         await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Use this address').click()
     }
     catch (exception) {
-        console.error(exception);
+        console.error(exception.stack);
     }
+
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Confirm' }).click();
-    await page.waitForSelector('text=Welcome to PC Game Pass', {"state": "visible"});
+    await page.waitForSelector('text=Welcome to PC Game Pass', { "state": "visible" });
     // await page.getByRole('button', { name: 'REDEEM NOW' }).click();
     await page.goto('https://www.minecraft.net/en-us/login');
     await page.getByTestId('MSALoginButtonLink').click();
     await page.getByRole('link', { name: 'Profile Name' }).click();
     await page.getByTestId('profile-name-input').click();
     await page.getByTestId('profile-name-input').fill(generateUsername(16));
+
     try {
         await page.getByTestId('ChangeNameButton').click();
         await console.log("Successfully applied gamepass!")
+
         fs.appendFile("hits.txt", `${email}:${password}\n`, function (err) {
-        if (err) throw err;
-        console.log('Saved!');
-        removeFirstLineFromFile("codes.txt");
-        removeFirstLineFromFile("combolist.txt");
-        removeFirstLineFromFile("vcc.txt");
-        console.log("cleaned uppp")
+            if (err) throw err;
+
+            console.log('Saved!');
+
+            removeFirstLineFromFile("codes.txt");
+            removeFirstLineFromFile("combolist.txt");
+            removeFirstLineFromFile("vcc.txt");
+
+            console.log("cleaned upp")
         });
     }
     catch (exception) {
