@@ -4,17 +4,34 @@ const fs = require('fs');
 
 function generateUsername(length) {
     let result = '';
+
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     const charactersLength = characters.length;
+
     let counter = 0;
+
     while (counter < length) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
         counter += 1;
     }
+
     return result;
 }
 
-const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+class Logger {
+    static info(message) {
+        console.log(gradient('green', 'yellow')(message))
+    }
+
+    static warning(message) {
+        console.log(gradient('orange', 'yellow')(message))
+    }
+
+    static error(message) {
+        console.log(gradient('error', 'yellow')(message))
+    }
+}
 
 function readFileAndSplitLines(filePath) {
     return new Promise((resolve, reject) => {
@@ -38,32 +55,25 @@ function readFileAndSplitLines(filePath) {
 function removeFirstLineFromFile(filePath) {
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
-            console.error('Error reading file:', err);
-            return;
+            return Logger.error('Error reading file: ' + err)
         }
 
-        // Split the content by lines
         const lines = data.split('\n');
 
-        // Remove the first line
         lines.shift();
 
-        // Join the lines back together
         const updatedContent = lines.join('\n');
 
-        // Write the updated content back to the file
         fs.writeFile(filePath, updatedContent, 'utf8', err => {
             if (err) {
-                console.error('Error writing to file:', err);
-                return;
+                return Logger.error('Error writing file: ' + err)
             }
-            console.log('First line removed from file:', filePath);
         });
     });
 }
 
 async function main() {
-    console.log(gradient('green', 'yellow')("This library is sponsored by xag (https://discord.gg/z7A9wf6D)"));
+    Logger.warning("This library is sponsored by xag (https://discord.gg/z7A9wf6D)");
 
     const stateAbbreviated = "NC".toLowerCase();
     const address = "207 Fire Access Road";
@@ -75,7 +85,7 @@ async function main() {
     let cardVCC = process.argv[4];
 
     if (!comboList || !offerId || !cardVCC) {
-        console.log(gradient('green', 'yellow')("Loaded CC info from combolist.txt & codes.txt & vc.txt"));
+        Logger.info("Loaded CC info from combolist.txt & codes.txt & vc.txt")
 
         try {
             const [comboListLines, offerIdLines, cardVCCLines] = await Promise.all([
@@ -88,17 +98,17 @@ async function main() {
             offerId = offerIdLines[0];
             cardVCC = cardVCCLines[0];
         } catch (err) {
-            console.error(err);
+            Logger.error("Loaded CC info from combolist.txt & codes.txt & vc.txt")
         }
     }
 
-    console.log(gradient('green', 'yellow')("This gen only supports xag accounts! Otherwise it won't work.")); // propaganda
+    Logger.warning("This gen only supports xag accounts! Otherwise it won't work."); // propaganda
 
     const [email, password] = comboList.split(':');
     const [cardNumber, cardExpMonth, cardExpYear, cardCvv] = cardVCC.split('|')
 
     if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
-        return console.error(gradient('red', 'yellow')("Invalid cc"))
+        return Logger.error("Invalid cc")
     }
 
     let url = "https://www.xbox.com/en-US/xbox-game-pass/invite-your-friends/redeem?offerId=";
@@ -108,7 +118,15 @@ async function main() {
         headless: false
     });
 
-    const page = await browser.newPage();
+    Logger.info("Opened browser")
+
+    let page;
+
+    try {
+        page = await browser.newPage()
+    } catch {
+        Logger.error("Failed to open browser")
+    }
 
     await page.goto(url);
     await page.getByLabel('Sign in or create a Microsoft').click();
@@ -153,7 +171,7 @@ async function main() {
         await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByLabel('Use this address').click()
     }
     catch (exception) {
-        console.error(exception.stack);
+        Logger.error(exception.stack);
     }
 
     await page.frameLocator('iframe[name="redeem-sdk-hosted-iframe"]').getByRole('button', { name: 'Confirm' }).click();
@@ -167,23 +185,25 @@ async function main() {
 
     try {
         await page.getByTestId('ChangeNameButton').click();
-        await console.log("Successfully applied gamepass!")
+
+        Logger.info("Successfully applied gamepass!")
 
         fs.appendFile("hits.txt", `${email}:${password}\n`, function (err) {
             if (err) throw err;
 
-            console.log('Saved!');
+            Logger.info("Saved!");
 
             removeFirstLineFromFile("codes.txt");
             removeFirstLineFromFile("combolist.txt");
             removeFirstLineFromFile("vcc.txt");
 
-            console.log("cleaned upp")
+            Logger.info("Cleaned up");
         });
     }
     catch (exception) {
-        console.error(exception);
+        Logger.error(exception);
     }
+
     // await page.getByLabel('Sign in or create a Microsoft').click();
     // await page.getByTestId('i0116').click();
     // await page.getByTestId('i0116').click();
@@ -238,4 +258,5 @@ async function main() {
     // await page.getByTestId('ChangeNameButton').click();
 }
 
-main().catch(error => console.error(error));
+main()
+    .catch(error => Logger.error(error));
