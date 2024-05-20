@@ -1,8 +1,5 @@
-# CocoGENV3 Pre-Release 3 Policies
+# CocoGENV3
 
-- No skidding
-- No selling this
-- No adding rats?? idk
-
+a generator i made for xcoco expecting payment he only payed half of it so im making it public 🤷‍♂️
 
 
