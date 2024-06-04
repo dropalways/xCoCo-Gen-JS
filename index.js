@@ -90,6 +90,12 @@ function removeFirstLineFromFile(filePath) {
 async function main() {
     Logger.print_logo()
 
+    Logger.warning("xcoco is a retarded paster");
+    Logger.warning("(he doesn't know in which lang his bot was made in and STILL uses replit to host his shit which got his token leaked a bunch of times)");
+    Logger.warning(`his xbox "gen" literally resells https://trust-accs.store/`);
+    Logger.warning(`last time i've checked his discord, he had a paid version of "his" gen, which sold java accs, and i assume that he used this tool to generate them`);
+    Logger.warning(`if you wanna an actual gen which doesn't suck ass and the owner isn't a retard, use xag.`);
+    
     Logger.warning("This library is sponsored by xag (https://discord.gg/z7A9wf6D)");
 
     const stateAbbreviated = "CA".toLowerCase();
