@@ -99,7 +99,7 @@ async function main() {
 
     Logger.info(`credits: dropalways/always for making this gen, operator for helping ig`)
     
-    Logger.warning("This library is sponsored by xag (https://discord.gg/z7A9wf6D)");
+    Logger.warning("This library is sponsored by xag (https://discord.gg/YsZ9qfurpv)");
 
     const stateAbbreviated = "CA".toLowerCase();
     const address = "4424 Glendale Avenue";
